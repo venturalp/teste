@@ -5,6 +5,8 @@ $(document).ready(function () {
 });
 
 function goHome() {
+    $("li").removeClass("active");
+    $("#navHome").addClass("active");
     $('#content').load("home.html");
 }
 
