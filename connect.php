@@ -8,6 +8,6 @@ if (!$link) {
 if (!mysql_select_db("teste", $link))
     echo "fail";
 
-//mysql_query("INSERT INTO CLIENTE (nome, email, telefone) VALUES ('Guilherme Ventura de Souza', 'venturalp@gmail.com', '(14) 98102-2002')");
+//echo mysql_query("INSERT INTO CLIENTE (nome, email, telefone) VALUES ('Guilherme Ventura de Souza', 'venturalp@gmail.com', '(14) 98102-2002')");
 
 ?>
