@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+
+<body>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form class="form-horizontal" role="form" id="formDados">
+                <label for="sel1">Cliente:</label>
+                <select class="form-control" id="sel1">
+
+                </select>
+                <label for="sel1">Produto:</label>
+                <select class="form-control" id="sel2">
+
+                </select><br>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+<script>
+    var dados = {};
+    dados.op = "listCliente";
+    $.ajax({
+        url:"crud.php",
+        data: dados,
+        type: "POST",
+        success: function(data){
+            retorno = JSON.parse(data);
+            console.log(retorno);
+            for(var i=0; i<retorno.length; i++){
+                $("#sel1").append($("<option>", {value:retorno[i].id, text:retorno[i].nome}));
+            }
+
+        }
+    });
+
+    dados.op = "listProduto";
+    $.ajax({
+        url:"crud.php",
+        data: dados,
+        type: "POST",
+        success: function(data){
+            retorno = JSON.parse(data);
+            console.log(retorno);
+            for(var i=0; i<retorno.length; i++){
+                $("#sel2").append($("<option>", {value:retorno[i].id, text:retorno[i].nome}));
+            }
+
+        }
+    });
+</script>
+</html>

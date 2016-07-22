@@ -193,3 +193,93 @@ function listProduto() {
 
     $("#content").load("listProduto.php");
 }
+
+
+function addPedido(id) {
+    $("li").removeClass("active");
+    $("#navPedido").addClass("active");
+    $("#navPedido").find("li").first().addClass("active");
+
+    $.ajax({
+        url: "addPedido.html",
+        cache: false,
+        dataType: "html",
+        success: function (data) {
+            $("#content").html(data);
+            if (id) {
+                editando = true;
+                buscaDadosPedido(id);
+            }
+            else{
+                editando = false;
+            }
+            savePedido(id);
+        }
+    });
+}
+
+function savePedido(id) {
+    $("#formDados").submit(function (e) {
+        var form = this;
+        e.preventDefault();
+        var dados = {};
+
+        if (editando)
+            dados.op = "editPedido";
+        else
+            dados.op = "addPedido";
+
+        if (id) dados.id = id;
+
+        dados.cliente = $("#sel1").val();
+        dados.produto = $("#sel2").val();
+
+        $.ajax({
+            type: "POST",
+            url: "crud.php",
+            data: dados,
+            success: function (data) {
+                if (parseInt(data) >= 1){
+                    $(form)[0].reset();
+                    listPedidos();
+                }
+                else
+                    alert("Não foi possível gravar o registro " + data);
+            },
+            fail: function (data) {
+                alert("Não foi possível gravar o registro");
+            }
+        });
+
+    });
+}
+
+function listPedidos() {
+    $("li").removeClass("active");
+    $("#navPedido").addClass("active");
+    $("#navPedido").find("li").last().addClass("active");
+
+    $("#content").load("listPedido.php");
+}
+
+
+function buscaDadosPedido(id) {
+    var dados = {};
+
+    dados.op = "listPedido";
+    dados.id = id;
+
+    $.ajax({
+        url: "crud.php",
+        type: "POST",
+        data: dados,
+        success: function (data) {
+            retorno = JSON.parse(data);
+            $("#sel1").val(retorno[0].id_cliente);
+            $("#sel2").val(retorno[0].id_produto);
+        },
+        fail: function (data) {
+            alert("Problemas para recuperar informações");
+        }
+    });
+}
